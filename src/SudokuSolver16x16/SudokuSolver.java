@@ -9,7 +9,7 @@ public class SudokuSolver {
     }
 
     public boolean solveBoard() {
-        int[][] board = sudoku.getBoard();
+        int[][] board = sudoku.getBoardForCalculation();
         int gridSize = sudoku.getGridSize();
         for (int row = 0; row < gridSize; row++) {
             for (int column = 0; column < gridSize; column++) {
@@ -30,6 +30,7 @@ public class SudokuSolver {
             if (isValidPlacement(board, possibleSolution, row, column)) {
                 board[row][column] = possibleSolution;
                 if (solveBoard()) {
+                    sudoku.setSolutionBoard(board);
                     return true;
                 } else {
                     board[row][column] = Constants.UNSOLVED;

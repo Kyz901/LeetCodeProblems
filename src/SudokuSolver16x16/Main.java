@@ -1,48 +1,46 @@
 package SudokuSolver16x16;
 
+/*
+*
+* Classic recursion sudoku solver improved by Igor Kuzmin
+* - Added 4x4 logic (no size limit possible)
+* - "As Is" sudoku initialization added
+* - Code clean refactoring to readable and easy to understanding
+*
+ */
+
 public class Main {
 
     public static void main(String[] args) {
-        final int[][] board = {
-            {0,15,6,5, 0,0,13,0, 12,0,0,0, 2,0,14,3},
-            {0,0,0,1, 0,2,0,0, 0,16,0,3, 5,6,0,4},
-            {4,3,2,14, 16,0,0,15, 7,0,13,0, 9,12,0,0},
-            {13,0,0,10, 6,0,0,0, 0,0,0,9, 0,0,0,7},
+        final String[][] board = {
+            {" ", "F", "6", "5",     " ", " ", "D", " ",    "C", " ", " ", " ",    "2", " ", "E", "3"},
+            {" ", " ", " ", "1",     " ", "2", " ", " ",    " ", "G", " ", "3",    "5", "6", " ", "4"},
+            {"4", "3", "2", "E",     "G", " ", " ", "F",    "7", " ", "D", " ",    "9", "C", " ", " "},
+            {"D", " ", " ", "A",     "6", " ", " ", " ",    " ", " ", " ", "9",    " ", " ", " ", "7"},
 
-            {2,0,0,0, 0,0,0,0, 4,1,5,12, 13,0,7,6},
-            {5,0,0,11, 0,9,0,0, 14,0,0,7, 15,0,0,0},
-            {0,0,14,0, 0,6,0,0, 0,2,0,0, 4,0,9,5},
-            {0,0,0,12, 14,5,0,0, 13,0,0,0, 3,11,0,0},
+            {"2", " ", " ", " ",     " ", " ", " ", " ",    "4", "1", "5", "C",    "D", " ", "7", "6"},
+            {"5", " ", " ", "B",     " ", "9", " ", " ",    "E", " ", " ", "7",    "F", " ", " ", " "},
+            {" ", " ", "E", " ",     " ", "6", " ", " ",    " ", "2", " ", " ",    "4", " ", "9", "5"},
+            {" ", " ", " ", "C",     "E", "5", " ", " ",    "D", " ", " ", " ",    "3", "B", " ", " "},
 
-            {0,0,0,2, 13,0,1,0, 0,15,8,0, 0,4,0,0},
-            {0,1,0,0, 15,16,0,14, 0,0,12,10, 6,0,11,2},
-            {0,0,0,9, 10,0,0,0, 11,13,3,0, 16,5,12,1},
-            {11,4,12,6, 0,0,3,2, 1,7,0,0, 10,9,0,13},
+            {" ", " ", " ", "2",     "D", " ", "1", " ",    " ", "F", "8", " ",    " ", "4", " ", " "},
+            {" ", "1", " ", " ",     "F", "G", " ", "E",    " ", " ", "C", "A",    "6", " ", "B", "2"},
+            {" ", " ", " ", "9",     "A", " ", " ", " ",    "B", "D", "3", " ",    "G", "5", "C", "1"},
+            {"B", "4", "C", "6",     " ", " ", "3", "2",    "1", "7", " ", " ",    "A", "9", " ", "D"},
 
-            {0,0,11,0, 0,0,16,6, 0,0,0,4, 12,0,5,0},
-            {14,5,3,16, 0,0,2,0, 0,0,15,1, 0,7,6,0},
-            {0,0,8,0, 9,7,0,0, 3,0,16,14, 0,2,0,15},
-            {0,9,0,0, 0,15,0,0, 6,0,2,13, 14,0,16,0}
+            {" ", " ", "B", " ",     " ", " ", "G", "6",    " ", " ", " ", "4",    "C", " ", "5", " "},
+            {"E", "5", "3", "G",     " ", " ", "2", " ",    " ", " ", "F", "1",    " ", "7", "6", " "},
+            {" ", " ", "8", " ",     "9", "7", " ", " ",    "3", " ", "G", "E",    " ", "2", " ", "F"},
+            {" ", "9", " ", " ",     " ", "F", " ", " ",    "6", " ", "2", "D",    "E", " ", "G", " "},
         };
 
         Sudoku sudoku = new Sudoku(board);
         SudokuSolver sudokuSolver = new SudokuSolver(sudoku);
-        String result = sudokuSolver.solveBoard() ?  "Successfully" : "Failed";
-        System.out.println(result);
+        long startTime = System.nanoTime();
+        System.out.println(sudokuSolver.solveBoard() ?  "Successfully" : "Failed");
         sudoku.printBoard();
-        System.out.println(twoDimArrayEquals(board, board) ? "Equals" : "ERROR");
 
-    }
+        System.out.println("Completed in " + (System.nanoTime() - startTime) / 1_000_000 + " ms");
 
-    private static boolean twoDimArrayEquals(int[][] firstArray, int[][] secondArray) {
-        System.out.println("DEBUGGING ---> ");
-        for (int i = 0; i < firstArray.length; i++) {
-            for (int j = 0; j < firstArray[i].length; j++) {
-                if(!(firstArray[i][j] == secondArray[i][j])) {
-                    return false;
-                }
-            }
-        }
-        return true;
     }
 }

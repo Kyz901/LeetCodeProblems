@@ -1,17 +1,40 @@
 package SudokuSolver16x16;
 
+import java.util.Arrays;
+
 public class Sudoku {
 
-    private final int[][] board;
+    private final String[][] board;
+    private final int[][] boardForCalculation;
     private final int gridSize;
 
-    public Sudoku(int[][] board) {
+    public Sudoku(String[][] board) {
         this.board = board;
         this.gridSize = board.length;
+        boardForCalculation = transformBoard(board);
     }
 
-    public int[][] getBoard() {
-        return board;
+    public int[][] getBoardForCalculation() {
+        return Arrays.copyOf(boardForCalculation, gridSize);
+    }
+
+    public int[][] transformBoard(final String[][] board) {
+        int[][] transformedToNumbersBoard = new int[gridSize][gridSize];
+        for (int i = 0; i < gridSize; i++) {
+            for (int j = 0; j < gridSize; j++) {
+                transformedToNumbersBoard[i][j] = Constants.lettersToNumbers.get(board[i][j]);
+            }
+        }
+
+        return transformedToNumbersBoard;
+    }
+
+    public void setSolutionBoard(final int[][] resultBoard) {
+        for (int i = 0; i < gridSize; i++) {
+            for (int j = 0; j < gridSize; j++) {
+                board[i][j] = Constants.numbersToLetters.get(resultBoard[i][j]);
+            }
+        }
     }
 
     public int getGridSize() {
@@ -20,11 +43,11 @@ public class Sudoku {
 
 
     public void printBoard() {
-        System.out.println("---------------------------------------------");
+        System.out.println("-----------------------------------------");
         for (int i = 0; i < gridSize; i++) {
             System.out.print("| ");
             for (int j = 0; j < gridSize; j++) {
-                String solution = Constants.numbersToLetters.get(board[i][j]) + " ";
+                String solution = board[i][j] + " ";
                 if(isEndOfInnerBox(j+1)) {
                     solution = solution.concat("| ");
                 }
@@ -32,7 +55,7 @@ public class Sudoku {
             }
             System.out.println();
             if(isEndOfInnerBox(i+1)) {
-                System.out.println("---------------------------------------------");
+                System.out.println("-----------------------------------------");
             }
         }
     }
